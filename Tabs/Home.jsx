@@ -230,6 +230,5 @@ const styles = StyleSheet.create({
     fontSize: 32,
     marginTop: 30,
     marginBottom: 10,
-    fontFamily: "monospace",
   },
 });
