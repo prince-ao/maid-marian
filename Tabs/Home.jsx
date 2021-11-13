@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,65 +12,64 @@ const Home = () => {
   const [futuresMarkets, setFuturesMarkets] = useState([]);
   const [time, setTime] = useState("");
   useEffect(() => {
+    fetch("http://74.68.72.242:4000/home/us-markets")
+      .then((res) => res.json())
+      .then((json) => {
+        const json_ = Object.entries(json);
+        //console.log(json_);
+        setUsMarkets(json_);
+      });
+
+    fetch("http://74.68.72.242:4000/home/europe-markets")
+      .then((res) => res.json())
+      .then((json) => {
+        const json_ = Object.entries(json);
+        //console.log(json_);
+        setEuropeMarkets(json_);
+      });
+
+    fetch("http://74.68.72.242:4000/home/asia-markets")
+      .then((res) => res.json())
+      .then((json) => {
+        const json_ = Object.entries(json);
+        //console.log(json_);
+        setAsiaMarkets(json_);
+      });
+
+    fetch("http://74.68.72.242:4000/home/currency-markets")
+      .then((res) => res.json())
+      .then((json) => {
+        const json_ = Object.entries(json);
+        //console.log(json_);
+        setCurrencyMarkets(json_);
+      });
+
+    fetch("http://74.68.72.242:4000/home/crypto-markets")
+      .then((res) => res.json())
+      .then((json) => {
+        const json_ = Object.entries(json);
+        //console.log(json_);
+        setCryptoMarkets(json_);
+      });
+
+    fetch("http://74.68.72.242:4000/home/rates-markets")
+      .then((res) => res.json())
+      .then((json) => {
+        const json_ = Object.entries(json);
+        //console.log(json_);
+        setRatesMarkets(json_);
+      });
+
+    fetch("http://74.68.72.242:4000/home/futures-markets")
+      .then((res) => res.json())
+      .then((json) => {
+        const json_ = Object.entries(json);
+        //console.log(json_);
+        setFuturesMarkets(json_);
+      });
     setTimeout(() => {
-      fetch("http://74.68.72.242:4000/home/us-markets")
-        .then((res) => res.json())
-        .then((json) => {
-          const json_ = Object.entries(json);
-          //console.log(json_);
-          setUsMarkets(json_);
-        });
-
-      fetch("http://74.68.72.242:4000/home/europe-markets")
-        .then((res) => res.json())
-        .then((json) => {
-          const json_ = Object.entries(json);
-          //console.log(json_);
-          setEuropeMarkets(json_);
-        });
-
-      fetch("http://74.68.72.242:4000/home/asia-markets")
-        .then((res) => res.json())
-        .then((json) => {
-          const json_ = Object.entries(json);
-          //console.log(json_);
-          setAsiaMarkets(json_);
-        });
-
-      fetch("http://74.68.72.242:4000/home/currency-markets")
-        .then((res) => res.json())
-        .then((json) => {
-          const json_ = Object.entries(json);
-          //console.log(json_);
-          setCurrencyMarkets(json_);
-        });
-
-      fetch("http://74.68.72.242:4000/home/crypto-markets")
-        .then((res) => res.json())
-        .then((json) => {
-          const json_ = Object.entries(json);
-          //console.log(json_);
-          setCryptoMarkets(json_);
-        });
-
-      fetch("http://74.68.72.242:4000/home/rates-markets")
-        .then((res) => res.json())
-        .then((json) => {
-          const json_ = Object.entries(json);
-          //console.log(json_);
-          setRatesMarkets(json_);
-        });
-
-      fetch("http://74.68.72.242:4000/home/futures-markets")
-        .then((res) => res.json())
-        .then((json) => {
-          const json_ = Object.entries(json);
-          //console.log(json_);
-          setFuturesMarkets(json_);
-        });
-
       setTime(`${Math.random() * 1000000}`);
-    }, 1000 * 40);
+    }, 1000 * 30);
     return;
   }, [time]);
   // fetch("http://74.68.72.242:4000/home/us-markets")
@@ -85,7 +83,7 @@ const Home = () => {
     <SafeAreaView>
       <ScrollView>
         <View>
-          <Text>US Markets</Text>
+          <Text style={styles.rTitle}>US Markets🇺🇸</Text>
           <ScrollView horizontal={true}>
             {usMarkets.map((usMarket, key) => {
               return (
@@ -226,4 +224,10 @@ const Home = () => {
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  rTitle: {
+    fontSize: 32,
+    marginTop: 30,
+    marginBottom: 10,
+  },
+});
