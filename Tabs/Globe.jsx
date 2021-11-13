@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import {
   LineChart,
@@ -19,31 +20,38 @@ import {
 const Globe = () => {
   const [p1, setP1] = useState([1.56, 1.46, 1.51, 1.45, 1.53]);
   const [d1, setD1] = useState([
-    "2021-11-10",
-    "2021-11-09",
-    "2021-11-08",
-    "2021-11-05",
-    "2021-11-04",
+    "2021/11/10",
+    "2021/11/09",
+    "2021/11/08",
+    "2021/11/05",
+    "2021/11/04",
   ]);
   const [p2, setP2] = useState([
     1.23358439630637, 1.81221007526015, 2.44258329692818, 2.13011000365963,
     1.26158320570537,
   ]);
   const [d2, setD2] = useState([
-    "2020-01-01",
-    "2019-01-01",
-    "2018-01-01",
-    "2017-01-01",
-    "2016-01-01",
+    "2020/01/01",
+    "2019/01/01",
+    "2018/01/01",
+    "2017/01/01",
+    "2016/01/01",
   ]);
   const [p3, setP3] = useState([4.6, 4.8, 5.2, 5.4, 5.9]);
   const [d3, setD3] = useState([
-    "2021-10-01",
-    "2021-09-01",
-    "2021-08-01",
-    "2021-07-01",
-    "2021-06-01",
+    "2021/10/01",
+    "2021/09/01",
+    "2021/08/01",
+    "2021/07/01",
+    "2021/06/01",
   ]);
+  const [refresh, setRefresh] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
   const [time, setTime] = useState("");
   // useEffect(() => {
   //   setTimeout(() => {
@@ -119,16 +127,31 @@ const Globe = () => {
   //     setDat(data);*/
   // }, [time]);
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              wait(2000).then(() => {
+                setRefresh(`${Math.random() * 1000000}`);
+                setRefreshing(false);
+              });
+            }}
+            tintColor="black"
+          />
+        }
+      >
         <View>
-          <Text>US Treasury Yield</Text>
+          <Text style={styles.text}>US Treasury Yield 🏢</Text>
           <LineChart
             data={{
-              labels: d1,
+              labels: d1.reverse(),
               datasets: [
                 {
-                  data: p1,
+                  data: p1.reverse(),
                 },
               ],
             }}
@@ -137,11 +160,11 @@ const Globe = () => {
             yAxisInterval={1}
             chartConfig={{
               backgroundColor: "#e200c4",
-              backgroundGradientFrom: "#fb00d1",
-              backgroundGradientTo: "#f000e4",
+              backgroundGradientFrom: "#fb00d1b3",
+              backgroundGradientTo: "#ffbefc",
               decimalPlaces: 2,
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              color: (opacity = 1) => `#000`,
+              labelColor: (opacity = 1) => `#000`,
               style: {
                 borderRadius: 16,
               },
@@ -160,13 +183,15 @@ const Globe = () => {
         </View>
 
         <View>
-          <Text>Inflation - US Dollar Consumer Price</Text>
+          <Text style={styles.text}>
+            Inflation - US Dollar Consumer Price 💵🔻
+          </Text>
           <LineChart
             data={{
-              labels: d2,
+              labels: d2.reverse(),
               datasets: [
                 {
-                  data: p2,
+                  data: p2.reverse(),
                 },
               ],
             }}
@@ -175,11 +200,11 @@ const Globe = () => {
             yAxisInterval={1}
             chartConfig={{
               backgroundColor: "#e200c4",
-              backgroundGradientFrom: "#fb00d1",
-              backgroundGradientTo: "#f000e4",
+              backgroundGradientFrom: "#00772e",
+              backgroundGradientTo: "#abf3cf",
               decimalPlaces: 2,
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              color: (opacity = 1) => `#000`,
+              labelColor: (opacity = 1) => `#000`,
               style: {
                 borderRadius: 16,
               },
@@ -198,13 +223,13 @@ const Globe = () => {
         </View>
 
         <View>
-          <Text>Unemployment Rate</Text>
+          <Text style={styles.text}>Unemployment Rate 💼</Text>
           <LineChart
             data={{
-              labels: d3,
+              labels: d3.reverse(),
               datasets: [
                 {
-                  data: p3,
+                  data: p3.reverse(),
                 },
               ],
             }}
@@ -213,18 +238,18 @@ const Globe = () => {
             yAxisInterval={1}
             chartConfig={{
               backgroundColor: "#e200c4",
-              backgroundGradientFrom: "#fb00d1",
-              backgroundGradientTo: "#f000e4",
+              backgroundGradientFrom: "#00fbd9",
+              backgroundGradientTo: "#d7faf8",
               decimalPlaces: 2,
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              color: (opacity = 1) => `#000`,
+              labelColor: (opacity = 1) => `#000`,
               style: {
                 borderRadius: 16,
               },
               propsForDots: {
                 r: "6",
                 strokeWidth: "2",
-                stroke: "#ffa726",
+                stroke: "#f826ff",
               },
             }}
             bezier
@@ -241,4 +266,14 @@ const Globe = () => {
 
 export default Globe;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#ffd2fb",
+  },
+  text: {
+    fontSize: 26,
+    fontWeight: "bold",
+    marginTop: 50,
+    marginBottom: 40,
+  },
+});

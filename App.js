@@ -29,11 +29,12 @@ const BottomTab = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#df03fc",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: "#14a514",
+        tabBarInactiveTintColor: "#e451f1",
         tabBarStyle: {
-          backgroundColor: "#1a1a1a",
+          backgroundColor: "#995516",
           borderTopWidth: 0,
+          height: 60,
         },
       })}
     >
