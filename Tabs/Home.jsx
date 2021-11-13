@@ -5,6 +5,7 @@ import {
   Text,
   View,
   RefreshControl,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -23,6 +24,7 @@ const Home = () => {
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
+
   useEffect(() => {
     try {
       fetch("http://74.68.72.242:4000/home/us-markets")
