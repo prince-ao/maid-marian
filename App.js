@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { Home, Globe, Search, Settings } from "./Tabs";
+import { Home, Globe, Search } from "./Tabs";
 import { StockView } from "./Rooms";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -26,12 +26,10 @@ const BottomTab = () => {
             iconName = focused ? "search" : "search-outline";
           } else if (route.name === "globe") {
             iconName = focused ? "globe" : "globe-outline";
-          } else if (route.name === "settings") {
-            iconName = focused ? "ios-cog" : "ios-cog-outline";
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#0367fc",
+        tabBarActiveTintColor: "#df03fc",
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
           backgroundColor: "#1a1a1a",
@@ -42,9 +40,6 @@ const BottomTab = () => {
       <Tab.Screen name="home">{(props) => <Home {...props} />}</Tab.Screen>
       <Tab.Screen name="search">{(props) => <Search {...props} />}</Tab.Screen>
       <Tab.Screen name="globe">{(props) => <Globe {...props} />}</Tab.Screen>
-      <Tab.Screen name="settings">
-        {(props) => <Settings {...props} />}
-      </Tab.Screen>
     </Tab.Navigator>
   );
 };
