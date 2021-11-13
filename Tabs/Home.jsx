@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-
+import { StyleSheet, Text, View, SafeAreaView, StatusBar } from "react-native";
+import { Header } from "../components/Header";
 const Home = () => {
-  return (
-    <View>
-      <Text>Hello Home</Text>
-    </View>
-  );
+	return (
+		<View>
+			<Text>Hello Home</Text>
+		</View>
+	);
 };
 
 export default Home;
