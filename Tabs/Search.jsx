@@ -75,11 +75,12 @@ const Search = ({ navigation }) => {
 	}
 	return (
 		<>
-			<SafeAreaView>
+			<SafeAreaView style={{ backgroundColor: "pink" }}>
 				<StatusBar />
 				<SearchBar
 					round
 					searchIcon={{ size: 24 }}
+					clearIcon={{ size: 24 }}
 					placeholder="Search..."
 					onChangeText={onChangeQuery}
 					value={query}
@@ -88,6 +89,13 @@ const Search = ({ navigation }) => {
 						borderBottomWidth: 1,
 						borderRadius: 10,
 					}}
+					style={{ backgroundColor: "white" }}
+					labelStyle={{ backgroundColor: "white" }}
+					inputContainerStyle={{ backgroundColor: "white" }}
+					loadingProps={
+						<ActivityIndicator animating={true} size="small" color="pink" />
+					}
+					showLoading={true}
 				/>
 				<ScrollView
 					overScrollMode="never"
@@ -97,6 +105,7 @@ const Search = ({ navigation }) => {
 					{searchResult.map((val, i) => {
 						return (
 							<ListItem
+								style={{ borderColor: "pink" }}
 								key={i}
 								bottomDivider
 								onPress={async () => {
@@ -122,6 +131,13 @@ const Search = ({ navigation }) => {
 					})}
 				</ScrollView>
 			</SafeAreaView>
+			<FAB
+				icon={{ name: "list", size: 25 }}
+				placement="right"
+				color="white"
+				containerStyle={{ alignSelf: "center" }}
+				onPress={() => navigation.navigate("StockList")}
+			/>
 			{/* <ActivityIndicator
 				size="small"
 				color="#0000ff"
