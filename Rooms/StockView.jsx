@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import {
 	StyleSheet,
 	Text,
@@ -24,6 +24,7 @@ import Animated, {
 	useAnimatedStyle,
 	useDerivedValue,
 } from "react-native-reanimated";
+import * as SQLite from "expo-sqlite";
 
 const stocks = require("alphavantage")({ key: "QWU0U9D3208CKEP3" });
 
@@ -33,7 +34,10 @@ const StockView = ({ navigation, route }) => {
 	const overView = route.params.overView;
 	const change = route.params.change;
 
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
 	const [data, setData] = useState([]);
+	const [isSaved, setIsSaved] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const latestStats =
 		test["Time Series (Daily)"][Object.keys(test["Time Series (Daily)"])[0]];
@@ -57,8 +61,43 @@ const StockView = ({ navigation, route }) => {
 			});
 		setData(data);
 	}, []);
+	const db = SQLite.openDatabase("stockslist.db");
 
-	useEffect(() => {});
+	function add() {
+		db.transaction((tx) =>
+			tx.executeSql("INSERT INTO stocks (symbol, name) VALUES (?, ?)", [
+				symbol,
+				name,
+			])
+		);
+	}
+	function remove() {
+		db.transaction((tx) => {
+			tx.executeSql("DELETE FROM stocks WHERE symbol = ?", [symbol]);
+		});
+	}
+	function createTabel() {
+		db.transaction((tx) => {
+			tx.executeSql(
+				"CREATE TABLE IF NOT EXISTS stocks(symbol PRIMARY KEY NOT NULL, name TEXT)"
+			);
+		});
+	}
+	function isAdded() {
+		db.transaction((tx) => {
+			tx.executeSql(
+				"SELECT symbol FROM stocks WHERE symbol = ?",
+				[symbol],
+				(context, { rows }) =>
+					rows["_array"].length == 0 ? setIsSaved(false) : setIsSaved(true)
+			);
+		});
+	}
+
+	useEffect(() => {
+		createTabel();
+		isAdded();
+	});
 
 	function ChartLabelFactory(style) {
 		return function ChartLabel({ format, ...props }) {
@@ -69,16 +108,17 @@ const StockView = ({ navigation, route }) => {
 			const textProps = useAnimatedStyle(() => {
 				return {
 					text:
-						formattedValue.value.toString().length > 0
-							? "$" + parseFloat(formattedValue.value).toFixed(2)
-							: "$" + latestStats["2. high"],
+						typeof formattedValue.value !== "undefined"
+							? formattedValue.value.toString().length > 0
+								? "$" + parseFloat(formattedValue.value).toFixed(2)
+								: "$" + latestStats["2. high"]
+							: "Not Avaliable",
 				};
 			}, []);
-			console.log(val.value);
 			return (
 				<Animated.View
 					style={{
-						transform: [{ translateY: -50 }],
+						transform: [{ translateY: -60 }],
 						position: "absolute",
 						top: 0,
 						left: 0,
@@ -168,27 +208,64 @@ const StockView = ({ navigation, route }) => {
 			style={{
 				flexDirection: "column",
 				backgroundColor: "white",
-				alignSelf: "stretch",
 			}}>
 			<ScrollView>
-				<View style={{ flexDirection: "row" }}>
-					<Icon
-						raised
-						onPress={() => navigation.goBack()}
-						name="arrow-back"
-						size={20}
-						color="pink"
-						type="ionicon"
-						containerStyle={{ left: 10, top: 10 }}
-					/>
-					<Text style={{ left: 20, top: 27, fontSize: 20 }}>{symbol}</Text>
-					<Text
-						numberOfLines={1}
-						ellipsizeMode="tail"
-						style={{ left: 20, top: 34, fontSize: 13 }}>
-						{" "}
-						{name}
-					</Text>
+				<View
+					style={{
+						flexDirection: "row",
+					}}>
+					<View
+						style={{
+							flexDirection: "row",
+							width: Dimensions.get("window").width / 1.2,
+						}}>
+						<Icon
+							raised
+							onPress={() => navigation.goBack()}
+							name="arrow-back"
+							size={20}
+							color="pink"
+							type="ionicon"
+							containerStyle={{ left: 10, top: 10 }}
+						/>
+						<Text style={{ left: 20, top: 27, fontSize: 20 }}>{symbol}</Text>
+						<Text
+							numberOfLines={1}
+							ellipsizeMode="tail"
+							style={{
+								left: 20,
+								top: 34,
+								fontSize: 13,
+							}}>
+							{" "}
+							{name}
+						</Text>
+					</View>
+					<View>
+						<Icon
+							raised
+							onPress={() => {
+								try {
+									if (!isSaved) {
+										add();
+										setIsSaved(true);
+									} else {
+										remove();
+										setIsSaved(false);
+									}
+								} catch (err) {
+									console.log(err);
+								}
+							}}
+							name={!isSaved ? "add" : "close"}
+							size={20}
+							color="pink"
+							type="ionicon"
+							iconStyle={{ fontWeight: "bold" }}
+							containerStyle={{ top: 10 }}
+							style={{ position: "relative" }}
+						/>
+					</View>
 				</View>
 				<View style={{ backgroundColor: "white", marginTop: 50 }}>
 					{data.length < 1 ? (
@@ -201,7 +278,7 @@ const StockView = ({ navigation, route }) => {
 								hitSlop={0}
 								height={SIZE / 2}
 								stroke={
-									typeof change["Global Quote"]["10. change percent"] !== "undefined"
+									typeof change["Global Quote"] !== "undefined"
 										? parseFloat(change["Global Quote"]["10. change percent"]) < 0
 											? "red"
 											: "green"
@@ -236,7 +313,7 @@ const StockView = ({ navigation, route }) => {
 						<View style={styles.innerColumn}>
 							<Text style={styles.statsName}>Open</Text>
 							<Text numberOfLines={1} ellipsizeMode="tail" style={styles.statsValue}>
-								{typeof change["Global Quote"]["02. open"] !== "undefined"
+								{typeof change["Global Quote"] !== "undefined"
 									? currencyFormat(parseFloat(change["Global Quote"]["02. open"]))
 									: "None"}
 							</Text>
@@ -244,7 +321,7 @@ const StockView = ({ navigation, route }) => {
 						<View style={{ flexDirection: "column" }}>
 							<Text style={styles.statsName}>Volume</Text>
 							<Text numberOfLines={1} ellipsizeMode="tail" style={styles.statsValue}>
-								{typeof change["Global Quote"]["06. volume"] !== "undefined"
+								{typeof change["Global Quote"] !== "undefined"
 									? trimNum(parseFloat(change["Global Quote"]["06. volume"]))
 									: "None"}
 							</Text>
@@ -254,7 +331,7 @@ const StockView = ({ navigation, route }) => {
 						<View style={styles.innerColumn}>
 							<Text style={styles.statsName}>Today's High</Text>
 							<Text numberOfLines={1} ellipsizeMode="tail" style={styles.statsValue}>
-								{typeof change["Global Quote"]["03. high"] !== "undefined"
+								{typeof change["Global Quote"] !== "undefined"
 									? currencyFormat(parseFloat(change["Global Quote"]["03. high"]))
 									: "None"}
 							</Text>
@@ -262,7 +339,7 @@ const StockView = ({ navigation, route }) => {
 						<View style={{ flexDirection: "column" }}>
 							<Text style={styles.statsName}>Change %</Text>
 							<Text numberOfLines={1} ellipsizeMode="tail" style={styles.statsValue}>
-								{typeof change["Global Quote"]["10. change percent"] !== "undefined"
+								{typeof change["Global Quote"] !== "undefined"
 									? parseFloat(change["Global Quote"]["10. change percent"]).toFixed(2)
 									: "None"}
 							</Text>
