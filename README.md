@@ -15,7 +15,7 @@ search for a specific security.
 
 <img src="./assets/IMG-0618.PNG" alt="img1" width="200"/> <img src="./assets/IMG-0619.PNG" width="200"/> <img src="./assets/IMG-0620.PNG" width="200"/> <img src="./assets/IMG-0622.PNG" width="200"/> <img src="./assets/IMG-0623.PNG" width="200"/> <img src="./assets/IMG-0624.PNG" width="200"/>
 
-## Running app ⚙️
+## Running the app ⚙️
 
 1. Find a server to host the backend.
 2. Clone the repo and run `yarn install`
