@@ -35,6 +35,7 @@ const BottomTab = () => {
           backgroundColor: "#995516",
           borderTopWidth: 0,
           height: 60,
+          borderRadius: 5,
         },
       })}
     >

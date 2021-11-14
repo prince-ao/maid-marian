@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { serverLink } from "@env";
 
 const Home = () => {
   const [usMarkets, setUsMarkets] = useState([]);
@@ -27,7 +28,7 @@ const Home = () => {
 
   useEffect(() => {
     try {
-      fetch("http://74.68.72.242:4000/home/us-markets")
+      fetch(`${serverLink}home/us-markets`)
         .then((res) => res.json())
         .then((json) => {
           const json_ = Object.entries(json);
@@ -39,7 +40,7 @@ const Home = () => {
     }
 
     try {
-      fetch("http://74.68.72.242:4000/home/europe-markets")
+      fetch(`${serverLink}home/europe-markets`)
         .then((res) => res.json())
         .then((json) => {
           const json_ = Object.entries(json);
@@ -51,7 +52,7 @@ const Home = () => {
     }
 
     try {
-      fetch("http://74.68.72.242:4000/home/asia-markets")
+      fetch(`${serverLink}home/asia-markets`)
         .then((res) => res.json())
         .then((json) => {
           const json_ = Object.entries(json);
@@ -63,7 +64,7 @@ const Home = () => {
     }
 
     try {
-      fetch("http://74.68.72.242:4000/home/currency-markets")
+      fetch(`${serverLink}home/currency-markets`)
         .then((res) => res.json())
         .then((json) => {
           const json_ = Object.entries(json);
@@ -75,7 +76,7 @@ const Home = () => {
     }
 
     try {
-      fetch("http://74.68.72.242:4000/home/crypto-markets")
+      fetch(`${serverLink}home/crypto-markets`)
         .then((res) => res.json())
         .then((json) => {
           const json_ = Object.entries(json);
@@ -87,7 +88,7 @@ const Home = () => {
     }
 
     try {
-      fetch("http://74.68.72.242:4000/home/rates-markets")
+      fetch(`${serverLink}home/rates-markets`)
         .then((res) => res.json())
         .then((json) => {
           const json_ = Object.entries(json);
@@ -99,7 +100,7 @@ const Home = () => {
     }
 
     try {
-      fetch("http://74.68.72.242:4000/home/futures-markets")
+      fetch(`${serverLink}home/futures-markets`)
         .then((res) => res.json())
         .then((json) => {
           const json_ = Object.entries(json);
@@ -114,13 +115,6 @@ const Home = () => {
     }, 1000 * 30);
     return;
   }, [time]);
-  // fetch("http://74.68.72.242:4000/home/us-markets")
-  //   .then((res) => res.json())
-  //   .then((json) => {
-  //     const json_ = Object.entries(json);
-  //     //console.log(json_);
-  //     setUsMarkets(json_);
-  //   });
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

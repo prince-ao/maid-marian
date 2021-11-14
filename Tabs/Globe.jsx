@@ -57,7 +57,7 @@ const Globe = () => {
   // useEffect(() => {
   //   setTimeout(() => {
   //     fetch(
-  //       `https://www.alphavantage.co/query?function=TREASURY_YIELD&interval=daily&maturity=10year&apikey=YVSB9G395OUHBATK`
+  //       `https://www.alphavantage.co/query?function=TREASURY_YIELD&interval=daily&maturity=10year&apikey=`
   //     )
   //       .then((response) => response.json())
   //       .then((res_) => {
@@ -77,7 +77,7 @@ const Globe = () => {
   //       });
 
   //     fetch(
-  //       `https://www.alphavantage.co/query?function=INFLATION&datatype=json&apikey=YVSB9G395OUHBATK`
+  //       `https://www.alphavantage.co/query?function=INFLATION&datatype=json&apikey=`
   //     )
   //       .then((response) => response.json())
   //       .then((res_) => {
@@ -99,7 +99,7 @@ const Globe = () => {
   //       });
 
   //     fetch(
-  //       `https://www.alphavantage.co/query?function=UNEMPLOYMENT&apikey=YVSB9G395OUHBATK`
+  //       `https://www.alphavantage.co/query?function=UNEMPLOYMENT&apikey=`
   //     )
   //       .then((response) => response.json())
   //       .then((res_) => {
