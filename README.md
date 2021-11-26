@@ -13,7 +13,7 @@ search for a specific security.
 
 ## Screenshots 📸
 
-<img src="./assets/IMG-0618.PNG" alt="img1" width="200"/> <img src="./assets/IMG-0619.PNG" width="200"/> <img src="./assets/IMG-0620.PNG" width="200"/> <img src="./assets/IMG-0622.PNG" width="200"/> <img src="./assets/IMG-0623.PNG" width="200"/> <img src="./assets/IMG-0624.PNG" width="200"/>
+<img src="./assets/IMG-0618.PNG" alt="img1" width="200"/> <img src="./assets/IMG-0619.PNG" width="200"/> <img src="./assets/IMG-0620.PNG" width="200"/> <img src="./assets/IMG-0622.PNG" width="200"/> <img src="./assets/IMG-0623.PNG" width="200"/> <img src="./assets/IMG-0624.PNG" width="200"/> <img src="./assets/IMG-0626.PNG" width="200"/>
 
 ## Running the app ⚙️
 
